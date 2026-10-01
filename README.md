@@ -19,6 +19,11 @@ VFR waypoints are also available as a content pack. Note that when a layer is di
 Waypoint photos will be added over time - crowdsourcing required! Please contact me to contribute photos. Photos will appear as such:
 <img width="1050" height="956" alt="WaypointAdditionalInfo" src="https://github.com/user-attachments/assets/d70def6c-6015-4f57-8bf1-fbdc972d7eaa" />
 
+## Installation Instructions
+Download the KML file or the Content Pack (zip file) from Releases (on the right side of the page). Open the respective file with Foreflight and load it as Custom Waypoints or Content Pack. 
+
+If you already have custom waypoints, you may want to consider whether to load the 180+ additional waypoints. If you want to keep it separate, consider using the Content Pack as you can delete it easily. 
+
 ## Future Content Ideas
 Some ideas for Content Pack:
 
