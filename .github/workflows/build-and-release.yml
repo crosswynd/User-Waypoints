@@ -63,7 +63,7 @@ jobs:
 
       # Best practice action for modern GitHub Releases
       - name: Publish Release and Upload Assets
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: build-assets/*
           generate_release_notes: true # Auto-generates changelog based on PRs/commits
