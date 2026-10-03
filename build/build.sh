@@ -51,17 +51,22 @@ rm *.jpeg
 cd ..
 
 # Write manifest file and zip the content pack
+# Extract a decimal version number from the release version. 
+RELEASE_VERSION=${GITHUB_REF_NAME#v}  # Strips leading 'v'
+RELEASE_VERSION=${RELEASE_VERSION%.*} # Strips trailing '.patch' number
+# Write manifest file
 cat << EOF > manifest.json
 {
 	"name": "Malaysia VFR Pack",
 	"abbreviation": "MY_VFR",
-	"version": $GITHUB_REF_NAME,
+	"version": $RELEASE_VERSION,
 	"organizationName": "SG FAA"
 }
 EOF
+# Zip content pack
 zip -r "MY VFR Waypoints.zip" manifest.json navdata/
 
-# Copy to output
+# Copy to output directory
 cd ../../
 mkdir dist
 cp temp/content_pack/"MY VFR Waypoints.zip" dist/
