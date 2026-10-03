@@ -1,4 +1,4 @@
-name: Build output files
+name: Build and release
 
 on:
   # Trigger when a semantic version tag is pushed
