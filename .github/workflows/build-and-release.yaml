@@ -1,0 +1,74 @@
+name: Build output files
+
+on:
+  # Trigger when a semantic version tag is pushed
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  
+  # Trigger on manually running the workflow from the Actions tab
+  workflow_dispatch: # Enables manual triggering
+
+permissions:
+  contents: write # Required to create the GitHub Release and upload assets
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Checkout repository code
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # 2. Set up latest version of Python 3
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.x' 
+          cache: 'pip' 
+
+      # 3. Install libraries specified in requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Run build script
+      - name: Run build script
+        run: bash ./build/build.sh
+
+      # 5. Upload artifacts
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+           name: release-files
+           path: dist/    # The directory where your built files live
+           if-no-files-found: error
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v7
+        with:
+          name: release-files
+          path: build-assets/
+
+      # Best practice action for modern GitHub Releases
+      - name: Publish Release and Upload Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build-assets/*
+          generate_release_notes: true # Auto-generates changelog based on PRs/commits
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Built-in auth token provided by GitHub
+      
